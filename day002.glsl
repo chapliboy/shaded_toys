@@ -1,5 +1,5 @@
 /*
-day002: Sphere
+day002: rotating camera
 28 Jan 2020
 
 So day2, implemented a camera, and rotation of the camera.
@@ -25,13 +25,20 @@ float sdfSphere(vec3 position, vec3 center, float radius) {
     return distance(position, center) - radius;
 }
 
+float sdfPlane( vec3 position, vec4 n )
+{
+  // TODO (28 Jan 2020 sam): Figure out how this works.
+  // Currently, I'm just fiddling values till I get the result I want.
+  return dot(position,n.xyz) + n.w;
+}
+
 float distanceField(vec3 position) {
 	// sphere 1
     float d = sdfSphere(position, vec3(0.0, 0.0, 0.0), 0.55);
     //return d;
     vec2 moon = mat2(cos(iTime),-sin(iTime),sin(iTime),cos(iTime)) * vec2(1.0,0.0);
     float d1 = sdfSphere(position, vec3(moon.x, 0.1, moon.y), 0.25);
-    float d2 = sdfSphere(position, vec3(2.0, 0.0, 0.0), 0.20);
+    float d2 = sdfPlane(position, vec4(0.0, 0.5, 0.0, 1.0));
 
     return min(d2, min(d, d1));
 }
